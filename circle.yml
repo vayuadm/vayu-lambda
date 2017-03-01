@@ -1,0 +1,16 @@
+machine:
+  pre:
+    - sudo curl -L -o /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+  environment:
+      ARTIFACTS_FOLDER: .dist
+test:
+  override:
+    - docker run -it --rm -v $PWD:/tmp node:4-alpine npm install --prefix /tmp request
+    - mkdir $ARTIFACTS_FOLDER
+    - zip -r -D $ARTIFACTS_FOLDER/vayulambda.zip node_modules/* index.js
+general:
+  artifacts:
+    - $ARTIFACTS_FOLDER
