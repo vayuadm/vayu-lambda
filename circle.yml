@@ -13,4 +13,4 @@ test:
     - zip -r -D $ARTIFACTS_FOLDER/vayulambda.zip node_modules/* index.js
 general:
   artifacts:
-    - cp $ARTIFACTS_FOLDER $CIRCLE_ARTIFACTS
+    - $ARTIFACTS_FOLDER
