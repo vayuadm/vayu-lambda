@@ -8,12 +8,13 @@ machine:
     PROJECT_PATH: /go/src/github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
     BUILDER_IMAGE_NAME: gaiadocker/base-go-build
     ARTIFACTS_FOLDER: .dist
+    ARTIFACT_ZIP: $ARTIFACTS_FOLDER/vayulambda.zip
 test:
   override:
     - docker run --rm -v $PWD:/tmp node:4-alpine npm install --prefix /tmp request
     - mkdir $ARTIFACTS_FOLDER
-    - zip -r -D $ARTIFACTS_FOLDER/vayulambda.zip node_modules/* index.js
-    - docker run --rm -v "$PWD":$PROJECT_PATH -w $PROJECT_PATH $BUILDER_IMAGE_NAME /go/script/github-release.sh github_api_token=$GITHUB_TOKEN owner=$CIRCLE_PROJECT_USERNAME repo=$CIRCLE_PROJECT_REPONAME tag=v0.0.$CIRCLE_BUILD_NUM filename=$ARTIFACTS_FOLDER/vayulambda.zip
+    - zip -r -D $ARTIFACT_ZIP node_modules/* index.js
+    - docker run --rm -v "$PWD":$PROJECT_PATH -w $PROJECT_PATH $BUILDER_IMAGE_NAME /go/script/github-release.sh github_api_token=$GITHUB_TOKEN owner=$CIRCLE_PROJECT_USERNAME repo=$CIRCLE_PROJECT_REPONAME tag=v0.0.$CIRCLE_BUILD_NUM filename=$ARTIFACT_ZIP
 general:
   artifacts:
     - .dist
