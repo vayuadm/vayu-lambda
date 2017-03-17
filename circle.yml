@@ -11,6 +11,7 @@ test:
     - docker run -it --rm -v $PWD:/tmp node:4-alpine npm install --prefix /tmp request
     - mkdir $ARTIFACTS_FOLDER
     - zip -r -D $ARTIFACTS_FOLDER/vayulambda.zip node_modules/* index.js
+    - ./script/github-release.sh github_api_token=$GITHUB_TOKEN owner=$CIRCLE_PROJECT_USERNAME repo=$CIRCLE_PROJECT_REPONAME tag=v0.0.$CIRCLE_BUILD_NUM filename=$ARTIFACTS_FOLDER/vayulambda.zip
 general:
   artifacts:
     - .dist
